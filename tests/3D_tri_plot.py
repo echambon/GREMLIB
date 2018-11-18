@@ -9,6 +9,7 @@ from CGAL.CGAL_Triangulation_3 import Delaunay_triangulation_3
 import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
 class FaceInfo2(object):
     def __init__(self):
@@ -128,10 +129,9 @@ if __name__ == "__main__":
                 xs[ind_point] = p.x()
                 ys[ind_point] = p.y()
                 zs[ind_point] = p.z()
-            print(xs)
-            print(ys)
-            print(zs)
-            ax.plot_trisurf(xs, ys, zs, *args)
+            #ax.plot_trisurf(xs, ys, zs, *args)
+            verts = [zip(xs,ys,zs)]
+            ax.add_collection3d(Poly3DCollection(verts,facecolors='r'))
 #            pts = [ facet_tri.source(), facet_tri.target() ]
 #            xs = [ pts[0].x(), pts[1].x() ]
 #            ys = [ pts[0].y(), pts[1].y() ]
@@ -139,7 +139,7 @@ if __name__ == "__main__":
 #            ax.plot_trisurf( xs, ys, zs, *args ) # find a way to draw a line
         
         for facet in cdt.finite_facets():
-            plot_facet(ax, facet, 'b-')
+            plot_facet(ax, facet)
         
         plt.show()
 
@@ -165,8 +165,8 @@ if __name__ == "__main__":
             Point_3(-1, -1, -1),
             Point_3(-1, -1,  1),
             Point_3(-1,  1,  1),
-            Point_3( 1,  1,  1),
             Point_3(-1,  1, -1),
+            Point_3( 1,  1,  1),
             Point_3( 1, -1,  1)
         ]
 
@@ -185,6 +185,9 @@ if __name__ == "__main__":
         #plot_triangulated_polygon(cdt, face_info)
         fig = plt.figure(figsize=(10,10))
         ax = fig.gca(projection='3d')
+        ax.set_xlim3d(-1.1, 1.1)
+        ax.set_ylim3d(-1.1, 1.1)
+        ax.set_zlim3d(-1.1, 1.1)
         plot_triangulated_polyhedron(ax, cdt2)
 
     main()
